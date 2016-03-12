@@ -6,6 +6,9 @@
 //! * http://www.embedded.com/design/prototyping-and-development/4211211/PID-without-a-PhD
 //! * http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-introduction/
 
+// FIXME: it may be worth to explore http://de.mathworks.com/help/simulink/slref/pidcontroller.html
+//        for additional features/inspiration
+
 extern crate core;
 
 use std::f64;
@@ -93,6 +96,11 @@ impl PIDController {
     pub fn reset(&mut self) {
         self.prev_value = f64::NAN,
         self.prev_error = f64::NAN,
+
+        // FIXME: http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-initialization/
+        //        suggests that this should not be there. however, it may miss
+        //        the fact that input and output can be two completely
+        //        different domains
         self.err_sum = 0;
     }
 
