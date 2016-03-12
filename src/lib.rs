@@ -70,8 +70,8 @@ impl PIDController {
             target: 0.0,
 
             err_sum: 0.0,
-            prev_value: 0.0,
-            prev_error: 0.0,
+            prev_value: f64::NAN,
+            prev_error: f64::NAN,
 
             i_min: -f64::INFINITY,
             i_max: f64::INFINITY,
@@ -90,6 +90,12 @@ impl PIDController {
         self.out_max = max;
     }
 
+    pub fn reset(&mut self) {
+        self.prev_value = f64::NAN,
+        self.prev_error = f64::NAN,
+        self.err_sum = 0;
+    }
+
     pub fn update(&mut self, value: f64, delta_t: f64) -> f64 {
         let error = self.target - value;
 
@@ -104,16 +110,22 @@ impl PIDController {
         let i_term = self.err_sum;
 
         // DIFFERENTIAL
-        let d_term = match self.d_mode {
-            DerivativeMode::OnMeasurement => {
-                // we use -delta_v instead of delta_error to reduce "derivative kick",
-                // see http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-derivative-kick/
-                self.d_gain * (self.prev_value - value) / delta_t
-            },
-            DerivativeMode::OnError => {
-                self.d_gain * (error - self.prev_error) / delta_t
-            }
-        };
+        let d_term = if self.prev_value == f64::NAN ||
+                        self.prev_error == f64::NAN {
+            // we have no previous values, so skip the derivative calculation
+            0.0
+        } else {
+            match self.d_mode {
+                DerivativeMode::OnMeasurement => {
+                    // we use -delta_v instead of delta_error to reduce "derivative kick",
+                    // see http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-derivative-kick/
+                    self.d_gain * (self.prev_value - value) / delta_t
+                },
+                DerivativeMode::OnError => {
+                    self.d_gain * (error - self.prev_error) / delta_t
+                }
+            };
+        }
 
         // store previous values
         self.prev_value = value;
