@@ -1,5 +1,13 @@
 //! Software PID controller
 //!
+//! Currently in a slightly experimental state, if you are attaching this to
+//! anything can break, please sit right next to the emergency stop (and read
+//! the source).
+//!
+//! Any change in behaviour (even bugfixes) in this will result in a major
+//! version increase (0.a -> 0.a+1 or x.y.z -> x+1.0.0), so upgrading with `^`
+//! will not break your carefully set tunings.
+//!
 //! Owes a great debt to:
 //!
 //! * https://en.wikipedia.org/wiki/PID_controller
