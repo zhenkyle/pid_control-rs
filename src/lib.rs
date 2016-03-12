@@ -53,13 +53,6 @@ pub struct PIDController {
 
     pub target: f64,
 
-    /// Collected i
-    pub err_sum: f64,
-
-    /// Previous input value
-    pub prev_value: f64,
-    pub prev_error: f64,
-
     /// Integral range limits
     pub i_min: f64,
     pub i_max: f64,
@@ -69,6 +62,11 @@ pub struct PIDController {
     pub out_max: f64,
 
     pub d_mode: DerivativeMode,
+
+    /// The PIDs internal state. All other attributes are configuration values
+    err_sum: f64,
+    prev_value: f64,
+    prev_error: f64,
 }
 
 impl PIDController {
