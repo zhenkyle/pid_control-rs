@@ -72,3 +72,22 @@ impl PIDController {
         p_term + d_term + i_term
     }
 }
+
+struct PIDDriver {
+    pub pid: PIDController,
+    pub target: f64,
+}
+
+impl PIDDriver {
+    fn new(pid: PIDController, target: f64) -> PIDDriver {
+        PIDDriver {
+            pid: pid,
+            target: target,
+        }
+    }
+
+    fn input(&mut self, value: f64) -> f64 {
+        let error = self.target - value;
+        self.pid.update(error, value)
+    }
+}
