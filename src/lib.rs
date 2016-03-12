@@ -85,9 +85,9 @@ impl PIDController {
         // INTEGRAL
         self.err_sum += limit_range(
             self.i_min, self.i_max,
-            self.err_sum + error * delta_t
+            self.err_sum + self.i_gain * error * delta_t
         );
-        let i_term = self.i_gain * self.err_sum;
+        let i_term = self.err_sum;
 
         // DIFFERENTIAL
         let d_term = match self.d_mode {
