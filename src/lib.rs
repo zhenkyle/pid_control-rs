@@ -40,7 +40,7 @@ pub struct PIDController {
     pub err_sum: f64,
 
     /// Previous input value
-    pub prev_error: f64,
+    pub prev_value: f64,
 
     /// Output range limits
     pub i_min: f64,
@@ -57,7 +57,7 @@ impl PIDController {
             target: 0.0,
 
             err_sum: 0.0,
-            prev_error: 0.0,
+            prev_value: 0.0,
 
             i_min: -f64::INFINITY,
             i_max: f64::INFINITY,
@@ -78,8 +78,10 @@ impl PIDController {
         let i_term = self.i_gain * self.err_sum;
 
         // DIFFERENTIAL
-        let d_term = self.d_gain * (self.prev_error - error) / delta_t;
-        self.prev_error = error;
+        // we use -delta_v instead of delta_error to reduce "derivative kick",
+        // see http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-derivative-kick/
+        let d_term = self.d_gain * (self.prev_value - value) / delta_t;
+        self.prev_value = value;
 
         p_term + d_term + i_term
     }
