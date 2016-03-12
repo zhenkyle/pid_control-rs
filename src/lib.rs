@@ -102,14 +102,14 @@ impl PIDController {
     }
 
     pub fn reset(&mut self) {
-        self.prev_value = f64::NAN,
-        self.prev_error = f64::NAN,
+        self.prev_value = f64::NAN;
+        self.prev_error = f64::NAN;
 
         // FIXME: http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-initialization/
         //        suggests that this should not be there. however, it may miss
         //        the fact that input and output can be two completely
         //        different domains
-        self.err_sum = 0;
+        self.err_sum = 0.0;
     }
 
     pub fn update(&mut self, value: f64, delta_t: f64) -> f64 {
@@ -140,8 +140,8 @@ impl PIDController {
                 DerivativeMode::OnError => {
                     self.d_gain * (error - self.prev_error) / delta_t
                 }
-            };
-        }
+            }
+        };
 
         // store previous values
         self.prev_value = value;
