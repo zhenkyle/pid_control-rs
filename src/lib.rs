@@ -31,7 +31,8 @@ pub struct PIDController {
 }
 
 #[inline]
-fn limit_range(min: f64, max: f64, value: f64) -> f64 {
+fn limit_range<T>(min: T, max: T, value: T) -> T
+where T: PartialOrd {
     if value > max {
         max
     }
