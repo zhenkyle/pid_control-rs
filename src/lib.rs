@@ -49,9 +49,13 @@ pub struct PIDController {
     pub prev_value: f64,
     pub prev_error: f64,
 
-    /// Output range limits
+    /// Integral range limits
     pub i_min: f64,
     pub i_max: f64,
+
+    /// Output range limits
+    pub out_min: f64,
+    pub out_max: f64,
 
     pub d_mode: DerivativeMode,
 }
@@ -72,8 +76,18 @@ impl PIDController {
             i_min: -f64::INFINITY,
             i_max: f64::INFINITY,
 
+            out_min: -f64::INFINITY,
+            out_max: f64::INFINITY,
+
             d_mode: DerivativeMode::OnMeasurement,
         }
+    }
+
+    pub fn limits(&mut self, min: f64, max: f64) {
+        self.i_min = min;
+        self.i_max = max;
+        self.out_min = min;
+        self.out_max = max;
     }
 
     pub fn update(&mut self, value: f64, delta_t: f64) -> f64 {
@@ -105,6 +119,9 @@ impl PIDController {
         self.prev_value = value;
         self.prev_error = error;
 
-        p_term + d_term + i_term
+        limit_range(
+            self.out_min, self.out_max,
+            p_term + d_term + i_term
+        )
     }
 }
