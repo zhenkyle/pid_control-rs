@@ -21,6 +21,10 @@ extern crate core;
 
 use std::f64;
 
+pub trait Controller {
+    fn update(&mut self, value: f64, delta_t: f64) -> f64;
+}
+
 #[inline]
 fn limit_range<T>(min: T, max: T, value: T) -> T
 where T: PartialOrd {
@@ -109,8 +113,10 @@ impl PIDController {
         //        different domains
         self.err_sum = 0.0;
     }
+}
 
-    pub fn update(&mut self, value: f64, delta_t: f64) -> f64 {
+impl Controller for PIDController {
+    fn update(&mut self, value: f64, delta_t: f64) -> f64 {
         let error = self.target - value;
 
         // PROPORTIONAL
