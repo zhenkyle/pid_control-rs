@@ -28,7 +28,7 @@ pub trait Controller {
 }
 
 #[inline]
-fn limit_range<T>(min: T, max: T, value: T) -> T
+pub fn limit_range<T>(min: T, max: T, value: T) -> T
 where T: PartialOrd {
     if value > max {
         max
