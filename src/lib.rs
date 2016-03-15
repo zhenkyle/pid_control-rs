@@ -23,6 +23,8 @@ use std::f64;
 
 pub trait Controller {
     fn update(&mut self, value: f64, delta_t: f64) -> f64;
+    fn set_target(&mut self, target: f64);
+    fn target(&self) -> f64;
 }
 
 #[inline]
@@ -116,6 +118,14 @@ impl PIDController {
 }
 
 impl Controller for PIDController {
+    fn set_target(&mut self, target: f64) {
+        self.target = target;
+    }
+
+    fn target(&self) -> f64 {
+        self.target
+    }
+
     fn update(&mut self, value: f64, delta_t: f64) -> f64 {
         let error = self.target - value;
 
