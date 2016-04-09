@@ -54,12 +54,38 @@ pub trait Controller {
 }
 
 
+/// PID controller derivative modes.
+///
+/// Two different ways of calculating the derivative can be used with the PID
+/// controller, allowing to avoid "derivative kick" if needed (see
+/// http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-derivative-kick/
+/// for details information on the implementation that inspired this one).
+///
+/// Choosing `OnMeasurement` will avoid large bumps in the controller output
+/// when changing the setpoint using `set_target()`.
 #[derive(Debug, Clone, Copy)]
 pub enum DerivativeMode {
+    /// Calculate derivative of error (classic PID-Controller)
     OnError,
+    /// Calculate derivative of actual changes in value.
     OnMeasurement,
 }
 
+/// PID Controller.
+///
+/// A PID controller, supporting the `Controller` interface. Any public values
+/// are safe to modify while in operation.
+///
+/// `p_gain`, `i_gain` and `d_gain` are the respective gain values. The
+/// controlller internally stores an already adjusted integral, making it safe
+/// to alter the `i_gain` - it will *not* result in an immediate large jump in
+/// controller behavior.
+///
+/// `i_min` and `i_max` are the limits for the internal integral storage.
+/// Similarly, `out_min` and `out_max` clip the output value to an acceptable
+/// range of values. By default, all limits are set to +/- infinity.
+///
+/// `d_mode` The `DerivativeMode`, the default is `OnMeasurement`.
 #[derive(Debug, Clone)]
 pub struct PIDController {
     /// Proportional gain
@@ -73,23 +99,24 @@ pub struct PIDController {
 
     target: f64,
 
-    /// Integral range limits
+    // Integral range limits
     pub i_min: f64,
     pub i_max: f64,
 
-    /// Output range limits
+    // Output range limits
     pub out_min: f64,
     pub out_max: f64,
 
     pub d_mode: DerivativeMode,
 
-    /// The PIDs internal state. All other attributes are configuration values
+    // The PIDs internal state. All other attributes are configuration values
     err_sum: f64,
     prev_value: f64,
     prev_error: f64,
 }
 
 impl PIDController {
+    /// Creates a new PID Controller.
     pub fn new(p_gain: f64, i_gain: f64, d_gain: f64) -> PIDController {
         PIDController{
             p_gain: p_gain,
@@ -112,6 +139,8 @@ impl PIDController {
         }
     }
 
+    /// Convenience function to set `i_min`/`i_max` and `out_min`/`out_max`
+    /// to the same values simultaneously.
     pub fn limits(&mut self, min: f64, max: f64) {
         self.i_min = min;
         self.i_max = max;
