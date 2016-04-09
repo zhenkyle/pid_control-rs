@@ -19,7 +19,7 @@
 
 extern crate core;
 
-mod util;
+pub mod util;
 
 use std::f64;
 
