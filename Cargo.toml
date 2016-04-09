@@ -1,6 +1,6 @@
 [package]
 name = "pid_control"
-version = "0.4.1"
+version = "0.5.0"
 authors = ["Marc Brinkmann <git@marcbrinkmann.de>"]
 description = """A pid controller library
 
