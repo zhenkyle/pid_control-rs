@@ -71,7 +71,7 @@ pub struct PIDController {
     /// Differential gain,
     pub d_gain: f64,
 
-    pub target: f64,
+    target: f64,
 
     /// Integral range limits
     pub i_min: f64,
