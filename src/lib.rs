@@ -21,10 +21,33 @@ extern crate core;
 
 use std::f64;
 
+/// A generic controller interface.
+///
+/// A controller is fed timestamped values and calculates an adjusted value
+/// based on previous readings.
+///
+/// Many controllers possess a set of adjustable parameters, as well as a set
+/// of input-value dependant state variables.
 pub trait Controller {
+    /// Record a measurement from the plan.
+    ///
+    /// Records a new values. `delta_t` is the time since the last update in
+    /// seconds.
     fn update(&mut self, value: f64, delta_t: f64) -> f64;
+
+    /// Adjust set target for the plant.
+    ///
+    /// The controller will usually try to adjust its output (from `update`) in
+    /// a way that results in the plant approaching `target`.
     fn set_target(&mut self, target: f64);
+
+    /// Retrieve target value.
     fn target(&self) -> f64;
+
+    /// Reset internal state.
+    ///
+    /// Resets the internal state of the controller; not to be confused with
+    /// its parameters.
     fn reset(&mut self);
 }
 
@@ -161,7 +184,8 @@ impl Controller for PIDController {
         self.prev_value = f64::NAN;
         self.prev_error = f64::NAN;
 
-        // FIXME: http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-initialization/
+        // FIXME: http://brettbeauregard.com/blog/2011/04/improving-the-beginner
+        //               %E2%80%99s-pid-initialization/
         //        suggests that this should not be there. however, it may miss
         //        the fact that input and output can be two completely
         //        different domains
