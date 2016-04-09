@@ -19,6 +19,8 @@
 
 extern crate core;
 
+mod util;
+
 use std::f64;
 
 /// A generic controller interface.
@@ -51,18 +53,6 @@ pub trait Controller {
     fn reset(&mut self);
 }
 
-#[inline]
-pub fn limit_range<T>(min: T, max: T, value: T) -> T
-where T: PartialOrd {
-    if value > max {
-        max
-    }
-    else if value < min {
-        min
-    } else {
-        value
-    }
-}
 
 #[derive(Debug, Clone, Copy)]
 pub enum DerivativeMode {
@@ -146,7 +136,7 @@ impl Controller for PIDController {
         let p_term = self.p_gain * error;
 
         // INTEGRAL
-        self.err_sum += limit_range(
+        self.err_sum += util::limit_range(
             self.i_min, self.i_max,
             self.err_sum + self.i_gain * error * delta_t
         );
@@ -174,7 +164,7 @@ impl Controller for PIDController {
         self.prev_value = value;
         self.prev_error = error;
 
-        limit_range(
+        util::limit_range(
             self.out_min, self.out_max,
             p_term + d_term + i_term
         )
