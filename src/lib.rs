@@ -25,6 +25,7 @@ pub trait Controller {
     fn update(&mut self, value: f64, delta_t: f64) -> f64;
     fn set_target(&mut self, target: f64);
     fn target(&self) -> f64;
+    fn reset(&mut self);
 }
 
 #[inline]
@@ -104,17 +105,6 @@ impl PIDController {
         self.out_min = min;
         self.out_max = max;
     }
-
-    pub fn reset(&mut self) {
-        self.prev_value = f64::NAN;
-        self.prev_error = f64::NAN;
-
-        // FIXME: http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-initialization/
-        //        suggests that this should not be there. however, it may miss
-        //        the fact that input and output can be two completely
-        //        different domains
-        self.err_sum = 0.0;
-    }
 }
 
 impl Controller for PIDController {
@@ -165,5 +155,16 @@ impl Controller for PIDController {
             self.out_min, self.out_max,
             p_term + d_term + i_term
         )
+    }
+
+    fn reset(&mut self) {
+        self.prev_value = f64::NAN;
+        self.prev_error = f64::NAN;
+
+        // FIXME: http://brettbeauregard.com/blog/2011/04/improving-the-beginner%E2%80%99s-pid-initialization/
+        //        suggests that this should not be there. however, it may miss
+        //        the fact that input and output can be two completely
+        //        different domains
+        self.err_sum = 0.0;
     }
 }
