@@ -141,7 +141,7 @@ impl PIDController {
 
     /// Convenience function to set `i_min`/`i_max` and `out_min`/`out_max`
     /// to the same values simultaneously.
-    pub fn limits(&mut self, min: f64, max: f64) {
+    pub fn set_limits(&mut self, min: f64, max: f64) {
         self.i_min = min;
         self.i_max = max;
         self.out_min = min;
