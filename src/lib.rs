@@ -172,8 +172,7 @@ impl Controller for PIDController {
         let i_term = self.err_sum;
 
         // DIFFERENTIAL
-        let d_term = if self.prev_value == f64::NAN ||
-                        self.prev_error == f64::NAN {
+        let d_term = if self.prev_value.is_nan() || self.prev_error.is_nan() {
             // we have no previous values, so skip the derivative calculation
             0.0
         } else {
