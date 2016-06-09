@@ -197,6 +197,7 @@ impl Controller for PIDController {
         self.prev_value = value;
         self.prev_error = error;
 
+        println!("d_term: {}", d_term);
         util::limit_range(
             self.out_min, self.out_max,
             p_term + d_term + i_term
