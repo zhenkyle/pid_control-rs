@@ -160,20 +160,15 @@ impl Controller for PIDController {
 
     fn update(&mut self, value: f64, delta_t: f64) -> f64 {
         let error = self.target - value;
-        // println!("Update called (dt={}). Error: {}, integral/err_sum: {}",
-        //          delta_t, error, self.err_sum);
 
         // PROPORTIONAL
         let p_term = self.p_gain * error;
 
         // INTEGRAL
-        // println!("calc new err_sum: err_sum {} + i_gain {} * error {} * delta_t {}",
-        //          self.err_sum, self.i_gain, error, delta_t);
         self.err_sum = util::limit_range(
             self.i_min, self.i_max,
             self.err_sum + self.i_gain * error * delta_t
         );
-        // println!("new err_sum {}", self.err_sum);
         let i_term = self.err_sum;
 
         // DIFFERENTIAL
@@ -197,7 +192,6 @@ impl Controller for PIDController {
         self.prev_value = value;
         self.prev_error = error;
 
-        // println!("d_term: {}", d_term);
         util::limit_range(
             self.out_min, self.out_max,
             p_term + d_term + i_term
