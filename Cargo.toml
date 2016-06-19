@@ -1,6 +1,6 @@
 [package]
 name = "pid_control"
-version = "0.7.0"
+version = "0.7.1"
 authors = ["Marc Brinkmann <git@marcbrinkmann.de>"]
 repository = "https://github.com/mbr/pid_control-rs"
 docs = "http://mbr.github.io/pid_control-rs/pid_control/"
