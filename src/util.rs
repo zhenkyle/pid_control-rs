@@ -3,7 +3,7 @@
 //! Contains small functions not related to the core functionality, but still
 //! exposed because they might be useful elsewhere.
 
-/// Cap a value inside a certain range.
+/// Caps a value inside a certain range.
 #[inline]
 pub fn limit_range<T>(min: T, max: T, value: T) -> T
 where T: PartialOrd {

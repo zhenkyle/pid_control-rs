@@ -1,12 +1,12 @@
 //! Software PID controller
 //!
-//! Currently in a slightly experimental state, if you are attaching this to
-//! anything can break, please sit right next to the emergency stop (and read
-//! the source).
+//! This crate implements a PID controller. It has seen some amount of
+//! real-world usage driving 100+ kW electrical motors, but has not been tested
+//! to death. Use with caution (but do use it and file bug reports!).
 //!
-//! Any change in behaviour (even bugfixes) in this will result in a major
-//! version increase (0.a -> 0.a+1 or x.y.z -> x+1.0.0), so upgrading with `^`
-//! will not break your carefully set tunings.
+//! Any change in behaviour that may make calculations behave differently will
+//! result in a major version upgrade; your tunings are safe as long as you
+//! stay on the same major version.
 //!
 //! Owes a great debt to:
 //!
@@ -28,10 +28,10 @@ use std::f64;
 /// A controller is fed timestamped values and calculates an adjusted value
 /// based on previous readings.
 ///
-/// Many controllers possess a set of adjustable parameters, as well as a set
+/// Many controllers possess a set of adjustable parameters as well as a set
 /// of input-value dependant state variables.
 pub trait Controller {
-    /// Record a measurement from the plan.
+    /// Record a measurement from the plant.
     ///
     /// Records a new values. `delta_t` is the time since the last update in
     /// seconds.
@@ -79,7 +79,7 @@ pub enum DerivativeMode {
 /// `p_gain`, `i_gain` and `d_gain` are the respective gain values. The
 /// controlller internally stores an already adjusted integral, making it safe
 /// to alter the `i_gain` - it will *not* result in an immediate large jump in
-/// controller behavior.
+/// controller output.
 ///
 /// `i_min` and `i_max` are the limits for the internal integral storage.
 /// Similarly, `out_min` and `out_max` clip the output value to an acceptable
