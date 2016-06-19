@@ -2,11 +2,9 @@
 name = "pid_control"
 version = "0.7.0"
 authors = ["Marc Brinkmann <git@marcbrinkmann.de>"]
-description = """A pid controller library
+description = """A PID controller library
 
-Note: Any change in behaviour (even bugfixes) in this will result in a major
-version increase (0.a -> 0.a+1 or x.y.z -> x+1.0.0), so upgrading with `^`
-will not break your carefully set tunings.
+Allows flexible creation of fast PID controllers to control plants of any kind.
 """
 license = "MIT"
 
