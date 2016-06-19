@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `PIDController` struct in crate `pid_control`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, PIDController">
+
+    <title>pid_control::PIDController - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>pid_control</a></p><script>window.sidebarCurrent = {name: 'PIDController', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>pid_control</a>::<wbr><a class='struct' href=''>PIDController</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-38' class='srclink' href='../src/pid_control/src/lib.rs.html#90-116' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct PIDController {
+    pub p_gain: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub i_gain: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub d_gain: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub i_min: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub i_max: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub out_min: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub out_max: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>,
+    pub d_mode: <a class='enum' href='../pid_control/enum.DerivativeMode.html' title='pid_control::DerivativeMode'>DerivativeMode</a>,
+    // some fields omitted
+}</pre><div class='docblock'><p>PID Controller.</p>
+
+<p>A PID controller, supporting the <code>Controller</code> interface. Any public values
+are safe to modify while in operation.</p>
+
+<p><code>p_gain</code>, <code>i_gain</code> and <code>d_gain</code> are the respective gain values. The
+controlller internally stores an already adjusted integral, making it safe
+to alter the <code>i_gain</code> - it will <em>not</em> result in an immediate large jump in
+controller output.</p>
+
+<p><code>i_min</code> and <code>i_max</code> are the limits for the internal integral storage.
+Similarly, <code>out_min</code> and <code>out_max</code> clip the output value to an acceptable
+range of values. By default, all limits are set to +/- infinity.</p>
+
+<p><code>d_mode</code> The <code>DerivativeMode</code>, the default is <code>OnMeasurement</code>.</p>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.p_gain'><code>p_gain</code></td><td><div class='docblock'><p>Proportional gain</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.i_gain'><code>i_gain</code></td><td><div class='docblock'><p>Integral gain</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.d_gain'><code>d_gain</code></td><td><div class='docblock'><p>Differential gain,</p>
+</div></td></tr><tr class='stab '>
+                             <td id='structfield.i_min'><code>i_min</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.i_max'><code>i_max</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.out_min'><code>out_min</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.out_max'><code>out_max</code></td><td></td></tr><tr class='stab '>
+                             <td id='structfield.d_mode'><code>d_mode</code></td><td></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><code>impl <a class='struct' href='../pid_control/struct.PIDController.html' title='pid_control::PIDController'>PIDController</a></code></h3><div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>(p_gain: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>, i_gain: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>, d_gain: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>) -&gt; <a class='struct' href='../pid_control/struct.PIDController.html' title='pid_control::PIDController'>PIDController</a></code></h4>
+<div class='docblock'><p>Creates a new PID Controller.</p>
+</div><h4 id='method.set_limits' class='method'><code>fn <a href='#method.set_limits' class='fnname'>set_limits</a>(&amp;mut self, min: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>, max: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>)</code></h4>
+<div class='docblock'><p>Convenience function to set <code>i_min</code>/<code>i_max</code> and <code>out_min</code>/<code>out_max</code>
+to the same values simultaneously.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><code>impl <a class='trait' href='../pid_control/trait.Controller.html' title='pid_control::Controller'>Controller</a> for <a class='struct' href='../pid_control/struct.PIDController.html' title='pid_control::PIDController'>PIDController</a></code></h3><div class='impl-items'><h4 id='method.set_target' class='method'><code>fn <a href='../pid_control/trait.Controller.html#tymethod.set_target' class='fnname'>set_target</a>(&amp;mut self, target: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>)</code></h4>
+<h4 id='method.target' class='method'><code>fn <a href='../pid_control/trait.Controller.html#tymethod.target' class='fnname'>target</a>(&amp;self) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a></code></h4>
+<h4 id='method.update' class='method'><code>fn <a href='../pid_control/trait.Controller.html#tymethod.update' class='fnname'>update</a>(&amp;mut self, value: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>, delta_t: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>) -&gt; <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a></code></h4>
+<h4 id='method.reset' class='method'><code>fn <a href='../pid_control/trait.Controller.html#tymethod.reset' class='fnname'>reset</a>(&amp;mut self)</code></h4>
+</div><h3 id='derived_implementations'>Derived Implementations </h3><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../pid_control/struct.PIDController.html' title='pid_control::PIDController'>PIDController</a></code></h3><div class='impl-items'><h4 id='method.clone' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../pid_control/struct.PIDController.html' title='pid_control::PIDController'>PIDController</a></code></h4>
+<h4 id='method.clone_from' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><span class="since">1.0.0</span></h4>
+</div><h3 class='impl'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html' title='core::fmt::Debug'>Debug</a> for <a class='struct' href='../pid_control/struct.PIDController.html' title='pid_control::PIDController'>PIDController</a></code></h3><div class='impl-items'><h4 id='method.fmt' class='method'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class='struct' href='https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html' title='core::fmt::Formatter'>Formatter</a>) -&gt; <a class='type' href='https://doc.rust-lang.org/nightly/core/fmt/type.Result.html' title='core::fmt::Result'>Result</a></code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "pid_control";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
