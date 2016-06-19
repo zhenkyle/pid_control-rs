@@ -2,6 +2,7 @@
 name = "pid_control"
 version = "0.7.0"
 authors = ["Marc Brinkmann <git@marcbrinkmann.de>"]
+repository = "https://github.com/mbr/pid_control-rs"
 description = """A PID controller library
 
 Allows flexible creation of fast PID controllers to control plants of any kind.
