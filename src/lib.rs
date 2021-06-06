@@ -20,7 +20,7 @@
 
 pub mod util;
 
-use core::f64;
+use core::f32;
 
 /// A generic controller interface.
 ///
@@ -34,16 +34,16 @@ pub trait Controller {
     ///
     /// Records a new values. `delta_t` is the time since the last update in
     /// seconds.
-    fn update(&mut self, value: f64, delta_t: f64) -> f64;
+    fn update(&mut self, value: f32, delta_t: f32) -> f32;
 
     /// Adjust set target for the plant.
     ///
     /// The controller will usually try to adjust its output (from `update`) in
     /// a way that results in the plant approaching `target`.
-    fn set_target(&mut self, target: f64);
+    fn set_target(&mut self, target: f32);
 
     /// Retrieve target value.
-    fn target(&self) -> f64;
+    fn target(&self) -> f32;
 
     /// Reset internal state.
     ///
@@ -88,35 +88,35 @@ pub enum DerivativeMode {
 #[derive(Debug, Clone)]
 pub struct PIDController {
     /// Proportional gain
-    pub p_gain: f64,
+    pub p_gain: f32,
 
     /// Integral gain
-    pub i_gain: f64,
+    pub i_gain: f32,
 
     /// Differential gain,
-    pub d_gain: f64,
+    pub d_gain: f32,
 
-    target: f64,
+    target: f32,
 
     // Integral range limits
-    pub i_min: f64,
-    pub i_max: f64,
+    pub i_min: f32,
+    pub i_max: f32,
 
     // Output range limits
-    pub out_min: f64,
-    pub out_max: f64,
+    pub out_min: f32,
+    pub out_max: f32,
 
     pub d_mode: DerivativeMode,
 
     // The PIDs internal state. All other attributes are configuration values
-    err_sum: f64,
-    prev_value: f64,
-    prev_error: f64,
+    err_sum: f32,
+    prev_value: f32,
+    prev_error: f32,
 }
 
 impl PIDController {
     /// Creates a new PID Controller.
-    pub fn new(p_gain: f64, i_gain: f64, d_gain: f64) -> PIDController {
+    pub fn new(p_gain: f32, i_gain: f32, d_gain: f32) -> PIDController {
         PIDController{
             p_gain: p_gain,
             i_gain: i_gain,
@@ -125,14 +125,14 @@ impl PIDController {
             target: 0.0,
 
             err_sum: 0.0,
-            prev_value: f64::NAN,
-            prev_error: f64::NAN,
+            prev_value: f32::NAN,
+            prev_error: f32::NAN,
 
-            i_min: -f64::INFINITY,
-            i_max: f64::INFINITY,
+            i_min: -f32::INFINITY,
+            i_max: f32::INFINITY,
 
-            out_min: -f64::INFINITY,
-            out_max: f64::INFINITY,
+            out_min: -f32::INFINITY,
+            out_max: f32::INFINITY,
 
             d_mode: DerivativeMode::OnMeasurement,
         }
@@ -140,7 +140,7 @@ impl PIDController {
 
     /// Convenience function to set `i_min`/`i_max` and `out_min`/`out_max`
     /// to the same values simultaneously.
-    pub fn set_limits(&mut self, min: f64, max: f64) {
+    pub fn set_limits(&mut self, min: f32, max: f32) {
         self.i_min = min;
         self.i_max = max;
         self.out_min = min;
@@ -149,15 +149,15 @@ impl PIDController {
 }
 
 impl Controller for PIDController {
-    fn set_target(&mut self, target: f64) {
+    fn set_target(&mut self, target: f32) {
         self.target = target;
     }
 
-    fn target(&self) -> f64 {
+    fn target(&self) -> f32 {
         self.target
     }
 
-    fn update(&mut self, value: f64, delta_t: f64) -> f64 {
+    fn update(&mut self, value: f32, delta_t: f32) -> f32 {
         let error = self.target - value;
 
         // PROPORTIONAL
@@ -198,8 +198,8 @@ impl Controller for PIDController {
     }
 
     fn reset(&mut self) {
-        self.prev_value = f64::NAN;
-        self.prev_error = f64::NAN;
+        self.prev_value = f32::NAN;
+        self.prev_error = f32::NAN;
 
         // FIXME: http://brettbeauregard.com/blog/2011/04/improving-the-beginner
         //               %E2%80%99s-pid-initialization/
